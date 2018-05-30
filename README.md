@@ -1,7 +1,50 @@
 # Gulp
 ## gulp 사용법
 
+반복잡업을 피하기 위한 빌드 도구이다.
 ```javascript
+npm install -g gulp
+//해당 파일로 이동 후
+npm install --save-dev gulp
+
+gulpfile.js 생성
+```
+```javascript
+//유용한 plugin
+gulp-webserver                # (웹서버처럼 동작하게 하는 플러그인)
+gulp-concat                   # (js 파일 병합 플러그인)
+gulp-uglify                   # (js파일 압축을 위한 플러그인)
+gulp-minify-html              # (html파일 minify를 위한 플러그인)
+gulp-sass sass                # (파일을 컴파일하기 위한 플러그인)
+gulp-livereload               # (웹 브라우저를 리로드하기 위한 플러그인)
+```
+이렇게 사용하고 해도 되고 추가해서 사용해도 된다.
+```javascript
+//file tree
+node_modules                  # (node_bodules)
+public                        # (기본 트리구조)
+├─dist                        # (컴파일 된 파일이 저장될 위치 폴더)
+│ ├─com/                      # (컴파일 된 css를 min파일로 compress할 폴더)
+│ ├─css/                      # (컴파일 된 css 파일)
+│ ├─img/                      # (압축된 이미지가 저장될 곳)
+│ ├─js/                       # (babel로인해 트렌스파일 된 js가 저장될 폴더)
+│ └─index.html                # (compress된 html이 저장됨)
+├─lib                         # (그대의 라이브버리 폴더)
+│ └─etc..                     # (그대의 라이브러리)
+└─src                         # (작업할 폴더)
+  ├─img/                      # (작성할 img폴더)
+  ├─js/                       # (작성할 js 폴더)
+  ├─scss/                     # (작성할 scss 폴더)
+  └─index.html                # (작성할 html 파일)
+.gitignore                    # (push를 무시할 파일 설정 파일)
+.babelrc                      # (babel을 사용할 의존성 파일) 
+gulpfile.js                   # (gulp를 사용하기 위한 의존성 파일)
+package.json                  # (npm 사용 package파일. gulp를 사용할 때 중요)
+package-lock.json             # (npm 사용 package파일. gulp를 사용할 때 중요)
+		
+```
+```javascript
+//gulpfile.js
 //#1
 const gulp = require('gulp');
 const webserver = require('gulp-webserver');
@@ -12,6 +55,7 @@ const livereload = require('gulp-livereload');
 const babel = require('gulp-babel');
 const uglifycss =require('gulp-uglifycss');
 const concat = require('gulp-concat');
+const imagemin = require('gulp-imagemin');
 
 //#2
 const src='public/src';
@@ -110,15 +154,7 @@ command-line 에서 아무런 아규먼트없이 실행될때 실행되는 task
 
 만약 특정 task를 실행하고싶다면 gulp task-name을 사용하면된다.
 
-```javascript
-//유용한 plugin
-gulp-webserver 웹서버처럼 동작하게 하는 플러그인
-gulp-concat js 파일 병합 플러그인
-gulp-uglify js파일 압축을 위한 플러그인
-gulp-minify-html -html파일 minify를 위한 플러그인
-gulp-sass sass 파일을 컴파일하기 위한 플러그인
-gulp-livereload 웹 브라우저를 리로드하기 위한 플러그인
-```
+
 ```javascript
 //#6
 
@@ -135,6 +171,13 @@ gulp.task('combine-js', function () {
     //.pipe(uglify()) *실행이 안됨.
     .pipe(gulp.dest(dist + '/js'));
 });
+
+ //image 압축
+ gulp.task('image-min',function(){
+   return gulp.src(src+'/img/*.jpg')
+    .pipe(imagemin())
+    .pipe(gulp.dest(dist+'/img'))
+ });
 
 // sass 파일을 css 로 컴파일한다.
 gulp.task('compile-sass', function () {
@@ -176,7 +219,7 @@ gulp.task('watch', function () {
 });
 
 //기본 task 설정
- gulp.task('default',['server','combine-js','compile-sass','compress-html','babel','mincss']);
+ gulp.task('default',['server','combine-js','compile-sass','compress-html','babel','mincss','image-min']);
  ```
 #6
 
