@@ -77,6 +77,8 @@ gulp.src('public/src/js/*.js')
   .pipe(gulp.dest('public/dist/js')); 
   // 마지막으로 이파일들을 이 폴더로 보냄, 이를 통해 우리가 실제로 사용하게 될 output파일로 쓰여짐 
 ```
+#4
+
 
 gulp.src 뒤에 주소있는 파일을 모두 긁어온다.
 
@@ -98,9 +100,12 @@ gulp.src 뒤에 주소있는 파일을 모두 긁어온다.
 
 
 ```javascript
+//#5
 gulp.task('default',['combine-js']);
-// -> 실행시 gulp 만 사용하면 defualt 안의 내용들이 실행된다.
+// -> 실행시 gulp 만 입력하면 defualt 안의 내용들이 실행된다.
 ```
+#5
+
 command-line 에서 아무런 아규먼트없이 실행될때 실행되는 task
 
 만약 특정 task를 실행하고싶다면 gulp task-name을 사용하면된다.
@@ -115,6 +120,8 @@ gulp-sass sass 파일을 컴파일하기 위한 플러그인
 gulp-livereload 웹 브라우저를 리로드하기 위한 플러그인
 ```
 ```javascript
+//#6
+
 // 웹서버를 localhost:8000 로 실행한다.
 gulp.task('server', function () {
   return gulp.src(dist + '/')
@@ -171,6 +178,8 @@ gulp.task('watch', function () {
 //기본 task 설정
  gulp.task('default',['server','combine-js','compile-sass','compress-html','babel','mincss']);
  ```
+#6
+
 
  gulp.watch(folder,[actoions])
 
