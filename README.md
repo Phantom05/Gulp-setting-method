@@ -1,7 +1,7 @@
 # Gulp
 ## gulp 사용법
 
-반복잡업을 피하기 위한 빌드 도구이다.
+gulp나 webpack을 사용하는 이유는, 반복잡업을 피하기 위한 빌드 도구이기 때문이다.
 ```javascript
 npm install -g gulp
 //해당 파일로 이동 후
@@ -87,7 +87,9 @@ gulp는 package.json 안에 반드시 선언되어 있어야 사용이 가능하
 
 >#2 
 
-plugin을 많이 사용해서 gulp나 webpack을 사용하기 때문에 자주사용하는 경로를 변수에 넣어둔다.
+plugin을 많이 사용해서 gulp나 webpack을 사용하거기 때문에 경로나 커멘드창이 매우 많이 띄게된다.
+
+때문에 코드가 지저분해질수 있어서 자주사용하는 경로를 변수에 넣어두는 것이다.
 
 ```javascript
 //#3
@@ -95,21 +97,27 @@ gulp.task('combine-js',[lint-js],function(){
   return gulp.src('./public/js/**/*.js')
   .pipe(concat('all.js'))
   //pipe를 사용해서 task의 결과물을 function에 전달해줄수 있다.
-  .pipe(gulp.desk('public/dist/js'));
-  //desk 즉, 해당 경로로 컴파일 한 파일을 만들어 주겠다는것이다.
+  .pipe(gulp.dest('public/dist/js'));
+  //dest 즉, 해당 경로로 컴파일 한 파일을 만들어 주겠다는것이다.
 })
 ```
 >#3
 
 js폴더안의 모든 js파일을 가져옴 /**/ 이건 와일드카드로 '모두'를 뜻한다.
 
-task의 두번째[]는 선행되야할 것임. 없으면 그냥 바로 함수가 실행됨
+task의 두번째[]는 선행되야할 것임. 없으면 바로 뒤쪽의 function이 실행된다.
 
 만약 포함하고 싶지 않은게 있다면 ! 느낌표를 붙이면됨 '!public/src/js/slider/slider-beta.js' 이런식
+```javascript
+gulp.src([
+  'public/src/js/loginForm.js'
+  'public/src/js/slider/*.js'
+  '!public/src/js/slider/slider-beta.js'
+  ] ...);
+```
+특정 폴더내에서 파일을 모두 가져오고 싶다면 public/src/js/slider/*.js 이런식이면 됨
 
-특정 폴더내에서 모두가져오고싶다면 public/src/js/slider/*.js 이런식이면 됨
-
-이렇게있으면 우선 src를 모두 글고 아래 piping을 한다는것다. 
+이렇게있으면 우선 src를 모두 글고 아래 piping을 한다는 것이다. 
 
 저 파일들에게 저 pipe기능을 모두 사용하겠다는 뜼!
 
